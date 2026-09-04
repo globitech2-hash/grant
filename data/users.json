@@ -84,6 +84,26 @@
         }
       ]
     },
+        {
+      "id": "blessed_oke274",
+      "full_name": "Blessed Oke",
+      "email": "okeblessed847@gmail.com",
+      "password": "blessed1993",
+      "currency": "USD",
+      "created_at": "2026-09-04T08:30:00Z",
+      "grants": [
+        {
+          "id": 201,
+          "program_name": "Small Business Recovery Grant",
+          "purpose": "Working capital and equipment replacement for a family bakery",
+          "requested_amount": 100000,
+          "approved_amount": 100000,
+          "tax_rate": 0.1,
+          "approved": false,
+          "created_at": "2026-02-14T11:05:00Z"
+        }
+      ]
+    },
     {
       "id": "u_1003",
       "full_name": "Priya Natarajan",
