@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title data-i18n="history.title">Grant history – Grant Wallet</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" data-i18n="history.title">Grant history</h1>
+            <p class="page-subtitle" data-i18n="history.subtitle">All grant applications linked to your account.</p>
+          </div>
+        </div>
+
+        <!-- Skeleton -->
+        <section id="skeleton" class="stack" aria-hidden="true">
+          <div class="card"><div class="skeleton sk-line w-60"></div></div>
+          <div class="card">
+            <div class="skeleton sk-line"></div>
+            <div class="skeleton sk-line w-80"></div>
+            <div class="skeleton sk-line w-80"></div>
+            <div class="skeleton sk-line w-60"></div>
+          </div>
+        </section>
+
+        <!-- Content -->
+        <section id="page-content" class="stack" hidden>
+          <div class="card">
+            <div class="row" style="justify-content:space-between">
+              <div class="input-group has-icon" style="flex:1 1 220px;max-width:360px">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg>
+                </span>
+                <input type="search" class="input" id="history-search" placeholder="Search by program name" data-i18n-placeholder="history.search" aria-label="Search by program name" data-i18n-aria="history.search" autocomplete="off">
+                <button type="button" class="input-action" id="history-clear" aria-label="Clear" hidden>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                </button>
+              </div>
+              <div class="row">
+                <div class="segmented" id="history-filters" role="group" aria-label="Filter by status">
+                  <button type="button" class="is-active" data-filter="all" aria-pressed="true" data-i18n="history.all">All</button>
+                  <button type="button" data-filter="approved" aria-pressed="false" data-i18n="history.approved">Approved</button>
+                  <button type="button" data-filter="notApproved" aria-pressed="false" data-i18n="history.notApproved">Not approved</button>
+                </div>
+                <span class="muted small" id="history-count" aria-live="polite"></span>
+              </div>
+            </div>
+          </div>
+
+          <section class="card" id="history-results"></section>
+          <div id="history-empty" hidden></div>
+        </section>
+
+        <section id="load-error" hidden></section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/translations.js"></script>
+  <script src="js/translator.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>

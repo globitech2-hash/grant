@@ -1,0 +1,132 @@
+.withdraw-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: var(--gap);
+  align-items: start;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.form-grid .span-2 {
+  grid-column: span 2;
+}
+
+.form-note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  margin-top: var(--space-4);
+  padding: 10px 12px;
+  background: var(--color-surface-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.form-note svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin-top: 1px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.withdraw-summary .stat-value {
+  margin-bottom: 8px;
+}
+
+.withdraw-summary .kv {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.result-card {
+  max-width: 560px;
+}
+
+.result-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.result-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.result-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.result-title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.result-text {
+  font-size: var(--fs-sm);
+  color: var(--color-text-2);
+  margin-top: 2px;
+}
+
+.result-card .kv {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.result-card .form-actions {
+  border-top: 0;
+  padding-top: 0;
+  justify-content: flex-start;
+}
+
+@media (max-width: 900px) {
+  .withdraw-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .withdraw-summary {
+    order: -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid .span-2 {
+    grid-column: span 1;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title data-i18n="profile.title">Profile – Grant Wallet</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" data-i18n="profile.title">Profile</h1>
+            <p class="page-subtitle" data-i18n="profile.subtitle">Account details and wallet summary.</p>
+          </div>
+          <div class="page-actions">
+            <button type="button" class="btn btn-secondary" data-refresh>
+              <span data-i18n="common.refresh">Refresh data</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Skeleton -->
+        <section id="skeleton" class="profile-grid" aria-hidden="true">
+          <div class="card">
+            <div class="skeleton sk-title"></div>
+            <div class="skeleton sk-line"></div>
+            <div class="skeleton sk-line w-80"></div>
+            <div class="skeleton sk-line w-60"></div>
+            <div class="skeleton sk-line w-80"></div>
+          </div>
+          <div class="card">
+            <div class="skeleton sk-title"></div>
+            <div class="skeleton sk-line"></div>
+            <div class="skeleton sk-line w-80"></div>
+            <div class="skeleton sk-line w-60"></div>
+            <div class="skeleton sk-line w-80"></div>
+          </div>
+          <div class="card">
+            <div class="skeleton sk-title"></div>
+            <div class="skeleton sk-line w-80"></div>
+            <div class="skeleton sk-line w-60"></div>
+          </div>
+          <div class="card">
+            <div class="skeleton sk-title"></div>
+            <div class="skeleton sk-line w-60"></div>
+          </div>
+        </section>
+
+        <!-- Content -->
+        <section id="page-content" class="profile-grid" hidden>
+          <!-- Account -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="profile.account">Account</h2>
+            </div>
+            <div class="profile-head">
+              <span class="avatar" id="profile-avatar">—</span>
+              <div>
+                <div class="profile-head-name" id="profile-head-name">—</div>
+                <div class="profile-head-email" id="profile-head-email">—</div>
+              </div>
+            </div>
+            <dl class="kv">
+              <div class="kv-row"><dt data-i18n="profile.fullName">Full name</dt><dd id="acct-full-name" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.email">Email</dt><dd id="acct-email" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.userId">User ID</dt><dd id="acct-user-id" class="mono" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.memberSince">Member since</dt><dd id="acct-member-since">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.lastLogin">Last login</dt><dd id="acct-last-login">—</dd></div>
+            </dl>
+          </section>
+
+          <!-- Wallet summary -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="profile.walletSummary">Wallet summary</h2>
+            </div>
+            <dl class="kv">
+              <div class="kv-row"><dt data-i18n="profile.availableBalance">Available balance</dt><dd id="wallet-balance" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.totalApproved">Total approved (gross)</dt><dd id="wallet-gross" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.totalTax">Total tax withheld</dt><dd id="wallet-tax" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.approvedCount">Approved grants</dt><dd id="wallet-approved-count" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.notApprovedCount">Not approved grants</dt><dd id="wallet-not-approved-count" data-no-translate="true">—</dd></div>
+              <div class="kv-row"><dt data-i18n="profile.lastActivity">Last grant activity</dt><dd id="wallet-last-activity">—</dd></div>
+            </dl>
+          </section>
+
+          <!-- Preferences -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="profile.preferences">Preferences</h2>
+            </div>
+            <div class="pref-row">
+              <div>
+                <div class="pref-label" data-i18n="profile.language">Language</div>
+                <div class="pref-hint" data-i18n="profile.languageHint">Applies to labels only. Amounts and dates keep their format.</div>
+              </div>
+              <div class="pref-control">
+                <span class="pref-value" id="pref-lang-value">English</span>
+                <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria="lang.label">
+                  <button type="button" data-lang="en" aria-pressed="false">EN</button>
+                  <button type="button" data-lang="es" aria-pressed="false">ES</button>
+                </div>
+              </div>
+            </div>
+            <div class="pref-row">
+              <div>
+                <div class="pref-label" data-i18n="common.refresh">Refresh data</div>
+                <div class="pref-hint" data-i18n="profile.refreshHint">Reload the latest data from the server.</div>
+              </div>
+              <div class="pref-control">
+                <button type="button" class="btn btn-secondary btn-sm" data-refresh>
+                  <span data-i18n="common.refresh">Refresh data</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Actions -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="profile.actions">Actions</h2>
+            </div>
+            <div class="pref-row">
+              <div>
+                <div class="pref-label" data-i18n="nav.logout">Log out</div>
+                <div class="pref-hint" data-i18n="profile.logoutHint">End your session on this device.</div>
+              </div>
+              <div class="pref-control">
+                <button type="button" class="btn btn-danger btn-sm" data-action="logout">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5"/><path d="m15 8 4 4-4 4"/><path d="M19 12H9"/></svg>
+                  <span data-i18n="nav.logout">Log out</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="load-error" hidden></section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/translations.js"></script>
+  <script src="js/translator.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

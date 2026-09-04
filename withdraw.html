@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title data-i18n="withdraw.title">Withdraw – Grant Wallet</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/withdraw.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+
+      <div class="main">
+        <header class="topbar" id="topbar"></header>
+
+        <main class="content">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title" data-i18n="withdraw.title">
+                Withdraw to bank account
+              </h1>
+              <p class="page-subtitle" data-i18n="withdraw.subtitle">
+                Enter the destination bank details for your transfer.
+              </p>
+            </div>
+            <div class="page-actions">
+              <a class="btn btn-ghost" href="dashboard.html">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M19 12H5" />
+                  <path d="m11 18-6-6 6-6" />
+                </svg>
+                <span data-i18n="common.back">Back</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Skeleton -->
+          <section id="skeleton" class="withdraw-layout" aria-hidden="true">
+            <div class="card">
+              <div class="skeleton sk-title"></div>
+              <div class="skeleton sk-line w-30"></div>
+              <div class="skeleton sk-line" style="height: 36px"></div>
+              <div class="skeleton sk-line w-30"></div>
+              <div class="skeleton sk-line" style="height: 36px"></div>
+              <div class="skeleton sk-line w-30"></div>
+              <div class="skeleton sk-line" style="height: 36px"></div>
+            </div>
+            <div class="card">
+              <div class="skeleton sk-line w-40"></div>
+              <div class="skeleton sk-stat"></div>
+              <div class="skeleton sk-line w-80"></div>
+            </div>
+          </section>
+
+          <!-- Content -->
+          <section id="page-content" hidden>
+            <div class="withdraw-layout" id="withdraw-layout">
+              <form
+                class="card"
+                id="withdraw-form"
+                novalidate
+                autocomplete="off"
+              >
+                <div class="card-header">
+                  <h2 class="card-title" data-i18n="withdraw.details">
+                    Bank details
+                  </h2>
+                </div>
+
+                <div class="form-grid">
+                  <div class="field span-2">
+                    <label for="full-name" data-i18n="withdraw.fullName"
+                      >Full name</label
+                    >
+                    <input
+                      id="full-name"
+                      name="fullName"
+                      type="text"
+                      class="input"
+                      autocomplete="name"
+                      required
+                    />
+                    <p class="field-error" id="full-name-error" hidden></p>
+                  </div>
+
+                  <div class="field">
+                    <label for="bank-name" data-i18n="withdraw.bankName"
+                      >Bank name</label
+                    >
+                    <input
+                      id="bank-name"
+                      name="bankName"
+                      type="text"
+                      class="input"
+                      required
+                    />
+                    <p class="field-error" id="bank-name-error" hidden></p>
+                  </div>
+
+                  <div class="field">
+                    <label for="country" data-i18n="withdraw.country"
+                      >Country</label
+                    >
+                    <select id="country" name="country" class="select" required>
+                      <option value="" data-i18n="withdraw.selectCountry">
+                        Select a country
+                      </option>
+                    </select>
+                    <p class="field-error" id="country-error" hidden></p>
+                  </div>
+
+                  <div class="field span-2">
+                    <label for="account-number" data-i18n="withdraw.account"
+                      >Account number / IBAN</label
+                    >
+                    <input
+                      id="account-number"
+                      name="accountNumber"
+                      type="text"
+                      class="input"
+                      inputmode="text"
+                      autocapitalize="characters"
+                      spellcheck="false"
+                      required
+                    />
+                    <p class="field-error" id="account-number-error" hidden></p>
+                  </div>
+
+                  <div class="field">
+                    <label for="routing-number"
+                      ><span data-i18n="withdraw.routing"
+                        >Routing number / SWIFT</span
+                      >
+                      <span class="optional"
+                        >(<span data-i18n="common.optional">Optional</span
+                        >)</span
+                      ></label
+                    >
+                    <input
+                      id="routing-number"
+                      name="routingNumber"
+                      type="text"
+                      class="input"
+                      spellcheck="false"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="amount" data-i18n="withdraw.amount"
+                      >Amount</label
+                    >
+                    <div class="input-group has-prefix">
+                      <span
+                        class="input-prefix"
+                        id="amount-prefix"
+                        data-no-translate="true"
+                        >$</span
+                      >
+                      <input
+                        id="amount"
+                        name="amount"
+                        type="text"
+                        class="input"
+                        inputmode="decimal"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="input-action"
+                        id="use-max"
+                        data-i18n="withdraw.useMax"
+                      >
+                        Use max
+                      </button>
+                    </div>
+                    <p
+                      class="field-hint"
+                      id="amount-hint"
+                      data-i18n="withdraw.amountHint"
+                    ></p>
+                    <p class="field-error" id="amount-error" hidden></p>
+                  </div>
+                </div>
+
+                <p class="form-note">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6z" />
+                  </svg>
+                  <span data-i18n="withdraw.notice"
+                    >Transfers are processed immediately withdrawal is
+                    requested. Ensure the details provided are correct.</span
+                  >
+                </p>
+
+                <div class="form-actions">
+                  <a class="btn btn-secondary" href="dashboard.html"
+                    ><span data-i18n="common.back">Back</span></a
+                  >
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="withdraw-submit"
+                  >
+                    <span data-i18n="withdraw.submit">Request withdrawal</span>
+                  </button>
+                </div>
+              </form>
+
+              <aside class="card withdraw-summary">
+                <div class="stat-label" data-i18n="withdraw.available">
+                  Available balance
+                </div>
+                <div
+                  class="stat-value"
+                  id="available-balance"
+                  data-no-translate="true"
+                >
+                  —
+                </div>
+                <dl class="kv">
+                  <div class="kv-row">
+                    <dt data-i18n="withdraw.approvedGrants">Approved grants</dt>
+                    <dd id="summary-approved" data-no-translate="true">—</dd>
+                  </div>
+                  <div class="kv-row">
+                    <dt data-i18n="withdraw.taxWithheld">Tax withheld</dt>
+                    <dd id="summary-tax" data-no-translate="true">—</dd>
+                  </div>
+                </dl>
+              </aside>
+            </div>
+
+            <section id="withdraw-result" hidden></section>
+            <section id="withdraw-no-balance" hidden></section>
+          </section>
+
+          <section id="load-error" hidden></section>
+        </main>
+      </div>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script src="js/translator.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/withdraw.js"></script>
+  </body>
+</html>

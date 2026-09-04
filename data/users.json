@@ -1,0 +1,114 @@
+{
+  "users": [
+    {
+      "id": "u_1001",
+      "full_name": "Amara Okafor",
+      "email": "amara.okafor@example.com",
+      "password": "Harbor-Lane-42",
+      "currency": "USD",
+      "created_at": "2025-08-19T10:04:00Z",
+      "grants": [
+        {
+          "id": 101,
+          "program_name": "Student Support Grant",
+          "purpose": "Tuition and course materials for the 2026 academic year",
+          "requested_amount": 5000,
+          "approved_amount": 5000,
+          "tax_rate": 0.1,
+          "approved": true,
+          "created_at": "2026-01-10T14:22:00Z"
+        },
+        {
+          "id": 102,
+          "program_name": "Community Outreach Fund",
+          "purpose": "Neighborhood literacy workshops and printed materials",
+          "requested_amount": 12000,
+          "approved_amount": 9500,
+          "tax_rate": 0.15,
+          "approved": true,
+          "created_at": "2025-11-03T09:15:00Z"
+        },
+        {
+          "id": 103,
+          "program_name": "Emergency Relief Assistance",
+          "purpose": "Temporary housing support after storm damage",
+          "requested_amount": 3000,
+          "approved": false,
+          "created_at": "2025-09-21T16:40:00Z"
+        }
+      ]
+    },
+    {
+      "id": "u_1002",
+      "full_name": "Daniel Reyes",
+      "email": "daniel.reyes@example.com",
+      "password": "Maple7!River",
+      "currency": "USD",
+      "created_at": "2025-10-02T08:30:00Z",
+      "grants": [
+        {
+          "id": 201,
+          "program_name": "Small Business Recovery Grant",
+          "purpose": "Working capital and equipment replacement for a family bakery",
+          "requested_amount": 25000,
+          "approved_amount": 18000,
+          "tax_rate": 0.2,
+          "approved": true,
+          "created_at": "2026-02-14T11:05:00Z"
+        },
+        {
+          "id": 202,
+          "program_name": "Digital Skills Training",
+          "purpose": "Staff certification in point-of-sale and inventory software",
+          "requested_amount": 4500,
+          "approved_amount": 4500,
+          "tax_rate": 0.1,
+          "approved": true,
+          "created_at": "2025-12-01T13:48:00Z"
+        },
+        {
+          "id": 203,
+          "program_name": "Green Energy Retrofit",
+          "purpose": "Rooftop solar installation for commercial premises",
+          "requested_amount": 15000,
+          "approved": false,
+          "created_at": "2026-01-28T10:12:00Z"
+        },
+        {
+          "id": 204,
+          "program_name": "Export Readiness Program",
+          "purpose": "Trade fair participation and export compliance consulting",
+          "requested_amount": 8000,
+          "approved": false,
+          "created_at": "2025-10-19T15:30:00Z"
+        }
+      ]
+    },
+    {
+      "id": "u_1003",
+      "full_name": "Priya Natarajan",
+      "email": "priya.natarajan@example.com",
+      "password": "Cedar_Point_19",
+      "currency": "USD",
+      "created_at": "2026-01-05T12:00:00Z",
+      "grants": [
+        {
+          "id": 301,
+          "program_name": "Research Fellowship Stipend",
+          "purpose": "Six-month field research on regional water quality",
+          "requested_amount": 7500,
+          "approved": false,
+          "created_at": "2026-01-22T09:20:00Z"
+        },
+        {
+          "id": 302,
+          "program_name": "Housing Stability Grant",
+          "purpose": "Rental deposit assistance following relocation",
+          "requested_amount": 2600,
+          "approved": false,
+          "created_at": "2026-02-09T17:55:00Z"
+        }
+      ]
+    }
+  ]
+}

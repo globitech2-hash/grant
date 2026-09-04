@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title data-i18n="nav.dashboard">Dashboard – Grant Wallet</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="greeting" data-i18n="nav.dashboard">Dashboard</h1>
+            <p class="page-subtitle" data-i18n="dashboard.subtitle">Here is an overview of your grant wallet.</p>
+          </div>
+          <div class="page-actions">
+            <button type="button" class="btn btn-secondary" data-refresh>
+              <span data-i18n="common.refresh">Refresh data</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Skeleton -->
+        <section id="skeleton" class="stack" aria-hidden="true">
+          <div class="grid grid-4">
+            <div class="card"><div class="skeleton sk-line w-40"></div><div class="skeleton sk-stat"></div><div class="skeleton sk-line w-60"></div></div>
+            <div class="card"><div class="skeleton sk-line w-40"></div><div class="skeleton sk-stat"></div><div class="skeleton sk-line w-60"></div></div>
+            <div class="card"><div class="skeleton sk-line w-40"></div><div class="skeleton sk-stat"></div><div class="skeleton sk-line w-60"></div></div>
+            <div class="card"><div class="skeleton sk-line w-40"></div><div class="skeleton sk-stat"></div><div class="skeleton sk-line w-60"></div></div>
+          </div>
+          <div class="card"><div class="skeleton sk-line w-80"></div><div class="skeleton sk-line w-40"></div></div>
+          <div class="card">
+            <div class="skeleton sk-title"></div>
+            <div class="skeleton sk-line"></div>
+            <div class="skeleton sk-line w-80"></div>
+            <div class="skeleton sk-line w-60"></div>
+          </div>
+        </section>
+
+        <!-- Content -->
+        <section id="page-content" class="stack" hidden>
+          <div class="grid grid-4">
+            <div class="card stat stat-primary">
+              <div class="stat-label" data-i18n="dashboard.availableBalance">Available balance</div>
+              <div class="stat-value" id="stat-balance" data-no-translate="true">—</div>
+              <div class="stat-hint" data-i18n="dashboard.netAfterTax">Net of tax, approved grants</div>
+            </div>
+            <div class="card stat">
+              <div class="stat-label" data-i18n="dashboard.totalApproved">Total approved</div>
+              <div class="stat-value" id="stat-gross" data-no-translate="true">—</div>
+              <div class="stat-hint" data-i18n="dashboard.gross">Gross, before tax</div>
+            </div>
+            <div class="card stat">
+              <div class="stat-label" data-i18n="dashboard.taxWithheld">Tax withheld</div>
+              <div class="stat-value" id="stat-tax" data-no-translate="true">—</div>
+              <div class="stat-hint" data-i18n="dashboard.taxNote">Deducted at source</div>
+            </div>
+            <div class="card stat">
+              <div class="stat-label" data-i18n="dashboard.grants">Grants</div>
+              <div class="stat-value" id="stat-grants" data-no-translate="true">—</div>
+              <div class="stat-hint" id="stat-grants-hint" data-i18n="dashboard.approvedOf">—</div>
+            </div>
+          </div>
+
+          <div id="cta-slot"></div>
+
+          <section class="card" id="recent-card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="dashboard.recentGrants">Recent grants</h2>
+              <a class="link" href="history.html" data-i18n="common.viewAll">View all</a>
+            </div>
+            <div id="recent-slot"></div>
+          </section>
+        </section>
+
+        <section id="load-error" hidden></section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/translations.js"></script>
+  <script src="js/translator.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
