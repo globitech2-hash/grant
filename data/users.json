@@ -71,7 +71,7 @@
           "program_name": "Green Energy Retrofit",
           "purpose": "Rooftop solar installation for commercial premises",
           "requested_amount": 15000,
-          "approved": false,
+          "approved": true,
           "created_at": "2026-01-28T10:12:00Z"
         },
         {
