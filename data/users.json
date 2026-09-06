@@ -84,7 +84,7 @@
         }
       ]
     },
-        {
+    {
       "id": "blessed_oke274",
       "full_name": "Blessed Oke",
       "email": "okeblessed847@gmail.com",
@@ -93,13 +93,33 @@
       "created_at": "2026-09-04T08:30:00Z",
       "grants": [
         {
-          "id": 201,
+          "id": 2002,
           "program_name": "Business Startup Grant",
           "purpose": "Working capital and equipment replacement for a family bakery",
           "requested_amount": 100000,
           "approved_amount": 100000,
           "tax_rate": 0.1,
           "approved": true,
+          "created_at": "2026-09-04T07:42:00Z"
+        }
+      ]
+    },
+    {
+      "id": "guillermina_martínez274",
+      "full_name": "Guillermina Martínez Javalera",
+      "email": "test@gmail.com",
+      "password": "test",
+      "currency": "USD",
+      "created_at": "2026-09-04T08:30:00Z",
+      "grants": [
+        {
+          "id": 2001,
+          "program_name": "Housing and Relief Grant",
+          "purpose": "House payment and expenses for son's illness",
+          "requested_amount": 100000,
+          "approved_amount": 100000,
+          "tax_rate": 0.1,
+          "approved": false,
           "created_at": "2026-09-04T07:42:00Z"
         }
       ]
