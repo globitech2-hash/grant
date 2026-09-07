@@ -13,7 +13,7 @@ window.GWApp = (function () {
     wallet: null,
     source: null,
     fetchedAt: null,
-    loading: false
+    loading: false,
   };
 
   /* ---------- Session ---------- */
@@ -81,15 +81,33 @@ window.GWApp = (function () {
     return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
   }
 
-  function computeGrant(grant) {
+    function computeGrant(grant) {
     var g = grant || {};
+    
+    // Check if approved AND has a valid numeric approved_amount
     var isApproved = g.approved === true && typeof g.approved_amount === "number" && !isNaN(g.approved_amount);
+    
+    // NEW: Extract fee (default to 0 if missing/null/invalid)
+    var fee = 0;
+    if (typeof g.fee === "number" && !isNaN(g.fee)) {
+      fee = round2(g.fee);
+    }
+
     var approvedAmount = isApproved ? round2(g.approved_amount) : null;
     var taxRate = isApproved ? Number(g.tax_rate || 0) : null;
+    
+    // Tax calculation: ONLY on approved_amount (fee is excluded from tax base)
     var taxDeducted = isApproved ? round2(approvedAmount * taxRate) : null;
-    var netAmount = isApproved ? round2(approvedAmount - taxDeducted) : null;
+    
+    // Net calculation: (Approved Amount - Tax) + Fee
+    var netAmount = null;
+    if (isApproved) {
+      netAmount = round2((approvedAmount - taxDeducted) + fee);
+    }
+
     var created = g.created_at ? new Date(g.created_at) : null;
     if (created && isNaN(created.getTime())) created = null;
+    
     return {
       id: g.id,
       programName: g.program_name || "—",
@@ -99,6 +117,8 @@ window.GWApp = (function () {
       approvedAmount: approvedAmount,
       taxRate: taxRate,
       taxDeducted: taxDeducted,
+      // NEW: Expose fee for debugging/UI if needed later
+      fee: fee, 
       netAmount: netAmount,
       createdAt: g.created_at || null,
       createdDate: created
@@ -106,7 +126,9 @@ window.GWApp = (function () {
   }
 
   function computeWallet(user) {
-    var grants = (user && Array.isArray(user.grants) ? user.grants : []).map(computeGrant);
+    var grants = (user && Array.isArray(user.grants) ? user.grants : []).map(
+      computeGrant,
+    );
     grants.sort(function (a, b) {
       var ta = a.createdDate ? a.createdDate.getTime() : 0;
       var tb = b.createdDate ? b.createdDate.getTime() : 0;
@@ -127,7 +149,8 @@ window.GWApp = (function () {
       } else {
         notApprovedCount += 1;
       }
-      if (g.createdDate && (!last || g.createdDate > last)) last = g.createdDate;
+      if (g.createdDate && (!last || g.createdDate > last))
+        last = g.createdDate;
     });
     return {
       grants: grants,
@@ -138,7 +161,7 @@ window.GWApp = (function () {
       notApprovedCount: notApprovedCount,
       total: grants.length,
       lastActivity: last,
-      currency: (user && user.currency) || "USD"
+      currency: (user && user.currency) || "USD",
     };
   }
 
@@ -148,22 +171,42 @@ window.GWApp = (function () {
     var current = GWTranslator.getLang();
     return (
       '<div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria="lang.label">' +
-      '<button type="button" data-lang="en" class="' + (current === "en" ? "is-active" : "") + '" aria-pressed="' + (current === "en") + '">EN</button>' +
-      '<button type="button" data-lang="es" class="' + (current === "es" ? "is-active" : "") + '" aria-pressed="' + (current === "es") + '">ES</button>' +
+      '<button type="button" data-lang="en" class="' +
+      (current === "en" ? "is-active" : "") +
+      '" aria-pressed="' +
+      (current === "en") +
+      '">EN</button>' +
+      '<button type="button" data-lang="es" class="' +
+      (current === "es" ? "is-active" : "") +
+      '" aria-pressed="' +
+      (current === "es") +
+      '">ES</button>' +
       "</div>"
     );
   }
 
   function brandHTML() {
     return (
-      '<span class="brand-mark">' + GWUI.icon("wallet") + "</span>" +
-      '<span class="brand-text"><span class="brand-name">Grant Wallet</span><span class="brand-sub" data-i18n="app.tagline" style="display:block">' + t("app.tagline") + "</span></span>"
+      '<span class="brand-mark">' +
+      GWUI.icon("wallet") +
+      "</span>" +
+      '<span class="brand-text"><span class="brand-name">Grant Wallet</span><span class="brand-sub" data-i18n="app.tagline" style="display:block">' +
+      t("app.tagline") +
+      "</span></span>"
     );
   }
 
   function navLink(href, key, iconName) {
     return (
-      '<a class="nav-link" href="' + href + '">' + GWUI.icon(iconName) + '<span data-i18n="nav.' + key + '">' + t("nav." + key) + "</span></a>"
+      '<a class="nav-link" href="' +
+      href +
+      '">' +
+      GWUI.icon(iconName) +
+      '<span data-i18n="nav.' +
+      key +
+      '">' +
+      t("nav." + key) +
+      "</span></a>"
     );
   }
 
@@ -172,11 +215,17 @@ window.GWApp = (function () {
     if (!sidebar) return;
     sidebar.innerHTML =
       '<div class="sidebar-brand">' +
-      '<a class="brand" href="dashboard.html">' + brandHTML() + "</a>" +
-      '<button type="button" class="icon-btn sidebar-close" data-nav-close aria-label="Close menu" data-i18n-aria="nav.closeMenu">' + GWUI.icon("close") + "</button>" +
+      '<a class="brand" href="dashboard.html">' +
+      brandHTML() +
+      "</a>" +
+      '<button type="button" class="icon-btn sidebar-close" data-nav-close aria-label="Close menu" data-i18n-aria="nav.closeMenu">' +
+      GWUI.icon("close") +
+      "</button>" +
       "</div>" +
       '<nav class="sidebar-nav" aria-label="Main">' +
-      '<div class="nav-section" data-i18n="nav.section">' + t("nav.section") + "</div>" +
+      '<div class="nav-section" data-i18n="nav.section">' +
+      t("nav.section") +
+      "</div>" +
       navLink("dashboard.html", "dashboard", "dashboard") +
       navLink("history.html", "history", "history") +
       navLink("withdraw.html", "withdraw", "bank") +
@@ -184,7 +233,9 @@ window.GWApp = (function () {
       "</nav>" +
       '<div class="sidebar-footer">' +
       '<div class="user-chip" id="user-chip"><span class="avatar" id="user-avatar">—</span><div><div class="user-name" id="user-name">&nbsp;</div><div class="user-email" id="user-email">&nbsp;</div></div></div>' +
-      '<button type="button" class="icon-btn" data-action="logout" aria-label="Log out" data-i18n-aria="nav.logout" title="Log out" data-i18n-title="nav.logout">' + GWUI.icon("logout") + "</button>" +
+      '<button type="button" class="icon-btn" data-action="logout" aria-label="Log out" data-i18n-aria="nav.logout" title="Log out" data-i18n-title="nav.logout">' +
+      GWUI.icon("logout") +
+      "</button>" +
       "</div>";
 
     if (!document.getElementById("nav-overlay")) {
@@ -199,10 +250,20 @@ window.GWApp = (function () {
     var topbar = document.getElementById("topbar");
     if (!topbar) return;
     topbar.innerHTML =
-      '<button type="button" class="icon-btn menu-btn" data-nav-toggle aria-label="Open menu" data-i18n-aria="nav.menu" aria-expanded="false" aria-controls="sidebar">' + GWUI.icon("menu") + "</button>" +
-      '<div class="topbar-title" data-i18n="nav.' + pageKey + '">' + t("nav." + pageKey) + "</div>" +
+      '<button type="button" class="icon-btn menu-btn" data-nav-toggle aria-label="Open menu" data-i18n-aria="nav.menu" aria-expanded="false" aria-controls="sidebar">' +
+      GWUI.icon("menu") +
+      "</button>" +
+      '<div class="topbar-title" data-i18n="nav.' +
+      pageKey +
+      '">' +
+      t("nav." + pageKey) +
+      "</div>" +
       '<div class="topbar-right">' +
-      '<div class="last-updated is-idle" id="last-updated"><span class="dot"></span><span class="label"><span data-i18n="common.lastUpdated">' + t("common.lastUpdated") + "</span>:</span> <time id=\"last-updated-time\">" + t("common.never") + "</time></div>" +
+      '<div class="last-updated is-idle" id="last-updated"><span class="dot"></span><span class="label"><span data-i18n="common.lastUpdated">' +
+      t("common.lastUpdated") +
+      '</span>:</span> <time id="last-updated-time">' +
+      t("common.never") +
+      "</time></div>" +
       langToggleHTML() +
       "</div>";
   }
@@ -210,7 +271,11 @@ window.GWApp = (function () {
   function renderAuthTopbar() {
     var bar = document.getElementById("auth-topbar");
     if (!bar) return;
-    bar.innerHTML = '<a class="brand" href="login.html">' + brandHTML() + "</a>" + langToggleHTML();
+    bar.innerHTML =
+      '<a class="brand" href="login.html">' +
+      brandHTML() +
+      "</a>" +
+      langToggleHTML();
   }
 
   function updateUserChip(user) {
@@ -326,7 +391,7 @@ window.GWApp = (function () {
         function (err) {
           state.loading = false;
           throw err;
-        }
+        },
       );
   }
 
@@ -351,10 +416,19 @@ window.GWApp = (function () {
     GWUI.hide(document.getElementById("page-content"));
     box.innerHTML =
       '<div class="card load-error">' +
-      '<div class="alert alert-error">' + GWUI.icon("alert") +
-      '<div><span class="alert-title" data-i18n="common.loadErrorTitle">' + t("common.loadErrorTitle") + "</span>" +
-      '<span data-i18n="common.fetchFailed">' + t("common.fetchFailed") + "</span></div></div>" +
-      '<button type="button" class="btn btn-secondary" id="load-retry">' + GWUI.icon("refresh") + '<span data-i18n="common.retry">' + t("common.retry") + "</span></button>" +
+      '<div class="alert alert-error">' +
+      GWUI.icon("alert") +
+      '<div><span class="alert-title" data-i18n="common.loadErrorTitle">' +
+      t("common.loadErrorTitle") +
+      "</span>" +
+      '<span data-i18n="common.fetchFailed">' +
+      t("common.fetchFailed") +
+      "</span></div></div>" +
+      '<button type="button" class="btn btn-secondary" id="load-retry">' +
+      GWUI.icon("refresh") +
+      '<span data-i18n="common.retry">' +
+      t("common.retry") +
+      "</span></button>" +
       "</div>";
     GWUI.show(box);
     var btn = document.getElementById("load-retry");
@@ -399,12 +473,18 @@ window.GWApp = (function () {
 
   function statusBadge(g) {
     return g.isApproved
-      ? '<span class="badge badge-success" data-i18n="common.approved">' + t("common.approved") + "</span>"
-      : '<span class="badge badge-neutral" data-i18n="common.notApproved">' + t("common.notApproved") + "</span>";
+      ? '<span class="badge badge-success" data-i18n="common.approved">' +
+          t("common.approved") +
+          "</span>"
+      : '<span class="badge badge-neutral" data-i18n="common.notApproved">' +
+          t("common.notApproved") +
+          "</span>";
   }
 
   function money(v, currency) {
-    return v === null || v === undefined ? '<span class="cell-muted">—</span>' : GWUI.formatMoney(v, currency);
+    return v === null || v === undefined
+      ? '<span class="cell-muted">—</span>'
+      : GWUI.formatMoney(v, currency);
   }
 
   function grantTableHTML(grants, options) {
@@ -416,17 +496,40 @@ window.GWApp = (function () {
       .map(function (g) {
         return (
           "<tr>" +
-          '<td><div class="cell-strong">' + esc(g.programName) + "</div>" +
-          (g.purpose && !opts.compact ? '<div class="cell-sub" title="' + esc(g.purpose) + '">' + esc(g.purpose) + "</div>" : "") +
+          '<td><div class="cell-strong">' +
+          esc(g.programName) +
+          "</div>" +
+          (g.purpose && !opts.compact
+            ? '<div class="cell-sub" title="' +
+              esc(g.purpose) +
+              '">' +
+              esc(g.purpose) +
+              "</div>"
+            : "") +
           "</td>" +
-          '<td class="num" data-no-translate="true">' + money(g.requestedAmount, cur) + "</td>" +
-          '<td class="num" data-no-translate="true">' + money(g.approvedAmount, cur) + "</td>" +
-          '<td class="num" data-no-translate="true">' + money(g.taxDeducted, cur) +
-          (g.isApproved ? ' <span class="cell-muted small">(' + GWUI.formatPercent(g.taxRate) + ")</span>" : "") +
+          '<td class="num" data-no-translate="true">' +
+          money(g.requestedAmount, cur) +
           "</td>" +
-          '<td class="num cell-strong" data-no-translate="true">' + money(g.netAmount, cur) + "</td>" +
-          "<td>" + statusBadge(g) + "</td>" +
-          '<td class="cell-muted" style="white-space:nowrap">' + GWUI.formatDate(g.createdDate) + "</td>" +
+          '<td class="num" data-no-translate="true">' +
+          money(g.approvedAmount, cur) +
+          "</td>" +
+          '<td class="num" data-no-translate="true">' +
+          money(g.taxDeducted, cur) +
+          (g.isApproved
+            ? ' <span class="cell-muted small">(' +
+              GWUI.formatPercent(g.taxRate) +
+              ")</span>"
+            : "") +
+          "</td>" +
+          '<td class="num cell-strong" data-no-translate="true">' +
+          money(g.netAmount, cur) +
+          "</td>" +
+          "<td>" +
+          statusBadge(g) +
+          "</td>" +
+          '<td class="cell-muted" style="white-space:nowrap">' +
+          GWUI.formatDate(g.createdDate) +
+          "</td>" +
           "</tr>"
         );
       })
@@ -435,14 +538,30 @@ window.GWApp = (function () {
     var table =
       '<div class="table-wrap desktop-only"><table class="table">' +
       "<thead><tr>" +
-      '<th data-i18n="history.program">' + t("history.program") + "</th>" +
-      '<th class="num" data-i18n="history.requested">' + t("history.requested") + "</th>" +
-      '<th class="num" data-i18n="history.approvedAmt">' + t("history.approvedAmt") + "</th>" +
-      '<th class="num" data-i18n="history.tax">' + t("history.tax") + "</th>" +
-      '<th class="num" data-i18n="history.net">' + t("history.net") + "</th>" +
-      '<th data-i18n="history.status">' + t("history.status") + "</th>" +
-      '<th data-i18n="history.date">' + t("history.date") + "</th>" +
-      "</tr></thead><tbody>" + rows + "</tbody></table></div>";
+      '<th data-i18n="history.program">' +
+      t("history.program") +
+      "</th>" +
+      '<th class="num" data-i18n="history.requested">' +
+      t("history.requested") +
+      "</th>" +
+      '<th class="num" data-i18n="history.approvedAmt">' +
+      t("history.approvedAmt") +
+      "</th>" +
+      '<th class="num" data-i18n="history.tax">' +
+      t("history.tax") +
+      "</th>" +
+      '<th class="num" data-i18n="history.net">' +
+      t("history.net") +
+      "</th>" +
+      '<th data-i18n="history.status">' +
+      t("history.status") +
+      "</th>" +
+      '<th data-i18n="history.date">' +
+      t("history.date") +
+      "</th>" +
+      "</tr></thead><tbody>" +
+      rows +
+      "</tbody></table></div>";
 
     var cards =
       '<div class="grant-cards mobile-only">' +
@@ -450,13 +569,35 @@ window.GWApp = (function () {
         .map(function (g) {
           return (
             '<article class="grant-card">' +
-            '<div class="grant-card-head"><div><div class="grant-card-title">' + esc(g.programName) + "</div>" +
-            '<div class="muted small">' + GWUI.formatDate(g.createdDate) + "</div></div>" + statusBadge(g) + "</div>" +
+            '<div class="grant-card-head"><div><div class="grant-card-title">' +
+            esc(g.programName) +
+            "</div>" +
+            '<div class="muted small">' +
+            GWUI.formatDate(g.createdDate) +
+            "</div></div>" +
+            statusBadge(g) +
+            "</div>" +
             '<dl class="grant-card-grid">' +
-            '<div><dt data-i18n="history.requested">' + t("history.requested") + '</dt><dd data-no-translate="true">' + money(g.requestedAmount, cur) + "</dd></div>" +
-            '<div><dt data-i18n="history.approvedAmt">' + t("history.approvedAmt") + '</dt><dd data-no-translate="true">' + money(g.approvedAmount, cur) + "</dd></div>" +
-            '<div><dt data-i18n="history.tax">' + t("history.tax") + '</dt><dd data-no-translate="true">' + money(g.taxDeducted, cur) + "</dd></div>" +
-            '<div><dt data-i18n="history.net">' + t("history.net") + '</dt><dd data-no-translate="true">' + money(g.netAmount, cur) + "</dd></div>" +
+            '<div><dt data-i18n="history.requested">' +
+            t("history.requested") +
+            '</dt><dd data-no-translate="true">' +
+            money(g.requestedAmount, cur) +
+            "</dd></div>" +
+            '<div><dt data-i18n="history.approvedAmt">' +
+            t("history.approvedAmt") +
+            '</dt><dd data-no-translate="true">' +
+            money(g.approvedAmount, cur) +
+            "</dd></div>" +
+            '<div><dt data-i18n="history.tax">' +
+            t("history.tax") +
+            '</dt><dd data-no-translate="true">' +
+            money(g.taxDeducted, cur) +
+            "</dd></div>" +
+            '<div><dt data-i18n="history.net">' +
+            t("history.net") +
+            '</dt><dd data-no-translate="true">' +
+            money(g.netAmount, cur) +
+            "</dd></div>" +
             "</dl></article>"
           );
         })
@@ -518,6 +659,6 @@ window.GWApp = (function () {
     statusBadge: statusBadge,
     langToggleHTML: langToggleHTML,
     syncLangToggles: syncLangToggles,
-    getState: getState
+    getState: getState,
   };
 })();
