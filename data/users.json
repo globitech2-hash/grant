@@ -118,7 +118,7 @@
           "program_name": "Housing and Relief Grant",
           "purpose": "House payment and expenses for son's illness",
           "requested_amount": 100000,
-          "approved_amount": 100444.44,
+          "approved_amount": 100000,
           "fee": 380,
           "tax_rate": 0.1,
           "approved": true,
