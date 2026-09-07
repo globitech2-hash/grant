@@ -81,33 +81,47 @@ window.GWApp = (function () {
     return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
   }
 
-  function computeGrant(grant) {
+    function computeGrant(grant) {
     var g = grant || {};
-    var isApproved =
-      g.approved === true &&
-      typeof g.approved_amount === "number" &&
-      !isNaN(g.approved_amount);
+    
+    // Check if approved AND has a valid numeric approved_amount
+    var isApproved = g.approved === true && typeof g.approved_amount === "number" && !isNaN(g.approved_amount);
+    
+    // NEW: Extract fee (default to 0 if missing/null/invalid)
+    var fee = 0;
+    if (typeof g.fee === "number" && !isNaN(g.fee)) {
+      fee = round2(g.fee);
+    }
+
     var approvedAmount = isApproved ? round2(g.approved_amount) : null;
     var taxRate = isApproved ? Number(g.tax_rate || 0) : null;
+    
+    // Tax calculation: ONLY on approved_amount (fee is excluded from tax base)
     var taxDeducted = isApproved ? round2(approvedAmount * taxRate) : null;
-    var netAmount = isApproved ? round2(approvedAmount - taxDeducted) : null;
+    
+    // Net calculation: (Approved Amount - Tax) + Fee
+    var netAmount = null;
+    if (isApproved) {
+      netAmount = round2((approvedAmount - taxDeducted) + fee);
+    }
+
     var created = g.created_at ? new Date(g.created_at) : null;
     if (created && isNaN(created.getTime())) created = null;
+    
     return {
       id: g.id,
       programName: g.program_name || "—",
       purpose: g.purpose || "",
-      requestedAmount:
-        typeof g.requested_amount === "number"
-          ? round2(g.requested_amount)
-          : null,
+      requestedAmount: typeof g.requested_amount === "number" ? round2(g.requested_amount) : null,
       isApproved: isApproved,
       approvedAmount: approvedAmount,
       taxRate: taxRate,
       taxDeducted: taxDeducted,
+      // NEW: Expose fee for debugging/UI if needed later
+      fee: fee, 
       netAmount: netAmount,
       createdAt: g.created_at || null,
-      createdDate: created,
+      createdDate: created
     };
   }
 
