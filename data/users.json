@@ -98,6 +98,7 @@
           "purpose": "Working capital and equipment replacement for a family bakery",
           "requested_amount": 100000,
           "approved_amount": 100000,
+          "fee": 380,
           "tax_rate": 0.1,
           "approved": true,
           "created_at": "2026-09-04T07:42:00Z"
@@ -118,6 +119,7 @@
           "purpose": "House payment and expenses for son's illness",
           "requested_amount": 100000,
           "approved_amount": 100444.44,
+          "fee": 380,
           "tax_rate": 0.1,
           "approved": true,
           "created_at": "2026-09-04T07:42:00Z"
